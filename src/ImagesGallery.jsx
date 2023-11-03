@@ -1,53 +1,73 @@
-// src/components/ImageGallery.js
-import{ useState } from "react";
+import{ useCallback, useState } from "react";
 import classNames from "classnames";
 import './ImageGallery.css';
 import image1 from './assets/images/image-1.webp';
 import image2 from './assets/images/image-2.webp';
 import image3 from './assets/images/image-3.webp';
-import image4 from './assets/images/image-4.webp';
-import image5 from './assets/images/image-5.webp';
-import image6 from './assets/images/image-6.webp';
-import image7 from './assets/images/image-7.webp';
-import image8 from './assets/images/image-8.webp';
-import image9 from './assets/images/image-9.webp';
-import image10 from './assets/images/image-10.jpeg';
-import image11 from './assets/images/image-11.jpeg';
+// import image4 from './assets/images/image-4.webp';
+// import image5 from './assets/images/image-5.webp';
+// import image6 from './assets/images/image-6.webp';
+// import image7 from './assets/images/image-7.webp';
+// import image8 from './assets/images/image-8.webp';
+// import image9 from './assets/images/image-9.webp';
+// import image10 from './assets/images/image-10.jpeg';
+// import image11 from './assets/images/image-11.jpeg';
+
+
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+} from "@dnd-kit/core";
+
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import { SortableItem } from "./SortableItem";
 
 
 const ImagesGallery = () => {
+
   const [images, setImages] = useState([
-    { id: 1, url: image1, isFeatured: false },
-    { id: 2, url: image2, isFeatured: true },
-    { id: 3, url: image3, isFeatured: false },
-    { id: 4, url: image4, isFeatured: false },
-    { id: 5, url: image5, isFeatured: false },
-    { id: 6, url: image6, isFeatured: false },
-    { id: 7, url: image7, isFeatured: false },
-    { id: 8, url: image8, isFeatured: false },
-    { id: 9, url: image9, isFeatured: false },
-    { id: 10, url: image10, isFeatured: false },
-    { id: 11, url: image11, isFeatured: false },
+    { id: 1, url: image1},
+    { id: 2, url: image2},
+    { id: 3, url: image3},
   ]);
-
+  
   const [selectedImages, setSelectedImages] = useState([]);
-
+  const [activeId, setActiveId] = useState(null);
   const handleDelete = () => {
     setImages(images.filter((image) => !selectedImages.includes(image.id)));
     setSelectedImages([]);
   };
 
-  // const handleSetFeatured = (id) => {
-  //   setImages((prevImages) =>
-  //     prevImages.map((image) => ({
-  //       ...image,
-  //       isFeatured: image.id === id,
-  //     }))
-  //   );
-  // };
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+  const handleDragEnd = useCallback((event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setImages((images) => {
+        const oldIndex = images.indexOf(active?.id);
+        const newIndex = images.indexOf(over?.id);
+
+        return arrayMove(images, oldIndex, newIndex);
+      });
+    }
+
+    setActiveId(null);
+  }, []);
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
 
 
   return (
+    
     <div  className="bg-gray-600 py-4">
     <div className=" p-2 md:w-10/12 lg:w-5/6 mx-auto bg-white rounded-md sm:w-full lg:max-w-[850px]">
       {/* Up Area  */}
@@ -78,71 +98,46 @@ const ImagesGallery = () => {
       {/* Up Area Ends*/}
 
       {/* Image Gallery */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-10 border-t sm:w-full lg:max-w-[850px] ">
+     <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
 
-        {/* Featured Image Section */}
+     >
 
-        <div className="w-full h-auto  rounded-md border">
+      <SortableContext images={images} strategy={rectSortingStrategy}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-10 border-t sm:w-full lg:max-w-[850px] ">
+            
+          
+        {images && images.map((image, index) => (
+          // <img key={image.id} src={image.url} alt={`Image ${image.id}`} />
+          <SortableItem
+          key={image.id}
+          image={image}
+          index={index}
+
+          ></SortableItem>
+        ))}
+
+      {/* {images && images.map((image) => (
+        <img key={image.id} src={image.url} alt={`Image ${image.id}`} />
+      )} */}
+          
 
         </div>
+      </SortableContext>
 
-        {/* Show Images */}
-          {images.map((image) => (
-            <div
-              key={image.id}
-              className={classNames("relative hover:opacity-70 transition-opacity", {
-                " rounded-lg ": selectedImages.includes(image.id),
-              })}
-            >
-            <img
-              src={image.url}
-              alt={`Image ${image.id}`}
-              className= {classNames("w-12/12 h-auto rounded-lg border", {
-                " w-12/12 border border-blue-400": selectedImages.includes(image.id),
-              })}
-            />
-          {/* Images Ends*/}
 
-            {/* Set Featured Image */}
-
-             
-
-            {/* <div className="absolute top-1 left-1">
-                <button
-                  onClick={() => handleSetFeatured(image.id)}
-                  className={classNames("p-1 rounded-full",  {
-                    "bg-blue-500": image.isFeatured,
-                    "bg-gray-400": !image.isFeatured,
-                  })}
-                >
-                Set Featured
-              </button>
-            </div> */}
-            {/* Featured Image Ends */}
-
-            {/* Checkbox */}
-            <div className="absolute bottom-2 left-2">
-              <input
-              className="w-16 h-4"
-                type="checkbox"
-                onChange={() => {
-                  if (selectedImages.includes(image.id)) {
-                    setSelectedImages(selectedImages.filter((id) => id !== image.id));
-                  } else {
-                    setSelectedImages([...selectedImages, image.id]);
-                  }
-                }}
-                checked={selectedImages.includes(image.id)}
-              />
-            </div>
-            {/* Checkbox End */}
-
-          </div>
-        ))}
-      </div>
+      <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+            {activeId ? <SortableItem id={activeId} isDragging /> : null}
+          </DragOverlay>
+     </DndContext>
 
     </div>
     </div>
+
+   
   );
 };
 

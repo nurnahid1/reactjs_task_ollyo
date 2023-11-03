@@ -19,7 +19,7 @@ Create a responsive image gallery using React JS with the following features: re
    - Pretend the first image (from the LTR direction) as the featured image
    - The feature image should be visually distinct from the other images.
 5. **User Experience:**
-   - Ensure a smooth and responsive user experience.
+   - Ensure a smooth and responsive user experience. 🔵
    - Implement transitions or animations for a polished look and feel.
 
 6. **Live Demo:**
@@ -28,12 +28,12 @@ Create a responsive image gallery using React JS with the following features: re
    - Our verdict would be considered as rejected if your live URL link does not work.
 
 ## Guidelines:
-- Use React JS for building the image gallery.
-- You are free to use any additional libraries or frameworks as needed.
-- Please do not use any image gallery library
+- Use React JS for building the image gallery. 🔵
+- You are free to use any additional libraries or frameworks as needed. 🔵
+- Please do not use any image gallery library 🔵
 - Pay attention to code organization, readability, and best practices.
-- Include comments or documentation as necessary for clarity.
-- Ensure responsiveness for various screen sizes.
+- Include comments or documentation as necessary for clarity. 🔵
+- Ensure responsiveness for various screen sizes. 🔵
 
 
 ## Submission:
