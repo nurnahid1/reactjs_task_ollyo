@@ -10,7 +10,7 @@ export function SortableItem(props){
         setNodeRef,
         transform,
         transition,
-      } = useSortable({ id: props.id  });
+      } = useSortable({ id:props.id  });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -28,14 +28,9 @@ export function SortableItem(props){
 
         // </SingleImage>
 
-        <div  ref={setNodeRef}
-        style={style}
-        {...props}
-        {...attributes}
-        {...listeners}>
-
- 
-        </div>
+<div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <img src={props.src} alt={props.alt} />
+    </div>
     )
 
 }

@@ -31,19 +31,50 @@ import { SortableItem } from "./SortableItem";
 
 const ImagesGallery = () => {
 
-  const [images, setImages] = useState([
-    { id: 1, url: image1},
-    { id: 2, url: image2},
-    { id: 3, url: image3},
-  ]);
+  // const [images, setImages] = useState([
+  //   { id: 1, url: image1},
+  //   { id: 2, url: image2},
+  //   { id: 3, url: image3},
   
+  // ]);
+
+  const images = [
+    image1,
+    image2,
+    image3,
+    // image4,
+    // image5,
+    // image6,
+    // image7,
+    // image8,
+    // image9,
+    // image10,
+    // image11,
+  ];
+  
+  const [items, setItems] = useState(images);
   const [selectedImages, setSelectedImages] = useState([]);
   const [activeId, setActiveId] = useState(null);
+
   const handleDelete = () => {
-    setImages(images.filter((image) => !selectedImages.includes(image.id)));
+    setItems(items.filter((item) => !selectedImages.includes(item)));
     setSelectedImages([]);
   };
 
+  // const handleDeleteImg = () => {
+  //   const filteredArray1 = items.filter((item) => !deletedImg.includes(item));
+  //   setDeletedImg([]);
+  //   setItems(filteredArray1);
+  // };
+
+
+
+
+
+
+
+
+  
   const handleDragStart = useCallback((event) => {
     setActiveId(event.active.id);
   }, []);
@@ -51,16 +82,17 @@ const ImagesGallery = () => {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      setImages((images) => {
-        const oldIndex = images.indexOf(active?.id);
-        const newIndex = images.indexOf(over?.id);
+      setItems((items) => {
+        const oldIndex = items.indexOf(active?.id);
+        const newIndex = items.indexOf(over?.id);
 
-        return arrayMove(images, oldIndex, newIndex);
+        return arrayMove(items, oldIndex, newIndex);
       });
     }
 
     setActiveId(null);
   }, []);
+
   const handleDragCancel = useCallback(() => {
     setActiveId(null);
   }, []);
@@ -103,28 +135,23 @@ const ImagesGallery = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragCancel={handleDragCancel}
-
      >
 
-      <SortableContext images={images} strategy={rectSortingStrategy}>
+      <SortableContext items={items} strategy={rectSortingStrategy}>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-10 border-t sm:w-full lg:max-w-[850px] ">
             
           
-        {images && images.map((image, index) => (
-          // <img key={image.id} src={image.url} alt={`Image ${image.id}`} />
+        {items.map((image, index) => (
+        
           <SortableItem
-          key={image.id}
+          key={index}
           image={image}
           index={index}
 
           ></SortableItem>
         ))}
 
-      {/* {images && images.map((image) => (
-        <img key={image.id} src={image.url} alt={`Image ${image.id}`} />
-      )} */}
-          
-
+  
         </div>
       </SortableContext>
 

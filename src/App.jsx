@@ -1,6 +1,7 @@
 import './App.css'
+import Test from './Test'
 
-import ImagesGallery from './ImagesGallery'
+// import ImagesGallery from './ImagesGallery'
 
 
 
@@ -10,8 +11,8 @@ function App() {
   return (
     <>
       <div >
-          <ImagesGallery></ImagesGallery>
-          
+          {/* <ImagesGallery></ImagesGallery> */}
+          <Test></Test>
       </div>
     </>
   )
