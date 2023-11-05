@@ -7,12 +7,12 @@ Create a responsive image gallery using React JS with the following features: re
 ## Task Requirements:
 1. **Gallery Layout:**
    - Implement a grid layout for the image gallery. 🔵
-   - The gallery should display images with one feature image larger than the others.
+   - The gallery should display images with one feature image larger than the others. 🔵
 2. **Sorting:**
    - Enable reordering functionality to allow users to rearrange the order of images in the gallery.
    - Implement drag-and-drop functionality or any other intuitive method for reordering.
 3. **Deleting Multiple Images:** 🔵
-   - Allow users to select multiple images and delete them. 🔵
+   - Allow users to select multiple images and delete them. 
    - Provide a clear visual indication of selected images. 🔵
 4. **Setting Feature Image:**
    - Allow users to set a feature image by sorting.
@@ -20,7 +20,7 @@ Create a responsive image gallery using React JS with the following features: re
    - The feature image should be visually distinct from the other images.
 5. **User Experience:**
    - Ensure a smooth and responsive user experience. 🔵
-   - Implement transitions or animations for a polished look and feel.
+   - Implement transitions or animations for a polished look and feel. 🔵
 
 6. **Live Demo:**
    - Host your React JS image gallery on any platform of your choice.

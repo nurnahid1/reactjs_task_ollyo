@@ -1,36 +1,32 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Image from "./Image";
 
 
-export function SortableItem(props){
-    const {
-        // isDragging,
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-      } = useSortable({ id:props.id  });
+export function SortableItem(props) {
+  const { image } = props;
+  const {
+    isDragging,
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: image?.id });
 
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition
-    }
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
-    return(
-        // <SingleImage
-        // ref={setNodeRef}
-        // style={style}
-        // {...props}
-        // {...attributes}
-        // {...listeners}
-        // >
-
-        // </SingleImage>
-
-<div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <img src={props.src} alt={props.alt} />
-    </div>
-    )
-
+  return (
+      <Image 
+      ref={setNodeRef} 
+      style={style} 
+      withOpacity={isDragging} 
+      {...props} 
+      {...attributes} 
+      {...listeners}
+      ></Image>
+  );
 }
