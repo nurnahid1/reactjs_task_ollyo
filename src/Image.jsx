@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import { forwardRef, useEffect, useState } from "react";
 
+
 const Image = forwardRef(
   (
     {
@@ -70,27 +71,25 @@ const Image = forwardRef(
             type="checkbox"
             isSelected={selected}
             name={image}
-            id={image}
+            id={image?.id}
             className='absolute top-2 left-2 w-4 rounded-md h-4'
-            onValueChange={handleDeletedImages}
+            onChange={handleDeletedImages}
         />
 
           {hovered && (
-            // <div className={`absolute ${index === 0 ? "hidden" : ""} rounded-[10px] inset-0 bg-black bg-opacity-40 pointer-events-none z-10`}></div>
-
             <div
-  style={{
-    position: 'absolute',
-    opacity: index === 0 ? 0 : 0.4,
-    backgroundColor: 'black',
-    inset: 0,
-    pointerEvents: 'none',
-    borderRadius:'10px',
-    zIndex: 10,
-  }}
-></div>
-
+            style={{
+              position: 'absolute',
+              opacity: index === 0 ? 0 : 0.4,
+              backgroundColor: 'black',
+              inset: 0,
+              pointerEvents: 'none',
+              borderRadius:'10px',
+              zIndex: 10,
+            }}
+            ></div>
           )}
+
         </div>
       </>
     );

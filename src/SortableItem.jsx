@@ -16,14 +16,14 @@ export function SortableItem(props) {
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition
   };
 
   return (
       <Image 
       ref={setNodeRef} 
       style={style} 
-      withOpacity={isDragging} 
+      // withOpacity={isDragging} 
       {...props} 
       {...attributes} 
       {...listeners}

@@ -16,7 +16,7 @@ import { DndContext,  closestCenter } from "@dnd-kit/core";
 
 import {
   SortableContext,
-  arrayMove,
+  // arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 
@@ -86,9 +86,9 @@ const ImagesGallery = () => {
   const [deletedImg, setDeletedImg] = useState([]);
 
   const handleDeleteImg = () => {
-    const filteredArray1 = items.filter((item) => !deletedImg.includes(item));
+    const restImages = items.filter((item) => !deletedImg.includes(item));
     setDeletedImg([]);
-    setItems(filteredArray1);
+    setItems(restImages);
   };
 
   return (
@@ -142,17 +142,23 @@ const ImagesGallery = () => {
     </div>
   );
 
-  function handleDragEnd (event){
-    console.log("drag end called")
-    const {active, over}= event;
-    console.log('active:' + active.id)
-    console.log('over:' + over.id)
-    if(active?.id !== over?.id){
-      setItems((items) => {
-        const activeIndex = items.indexOf(active?.id);
-        const overIndex = items.indexOf(over?.id);
-        return arrayMove(items, activeIndex, overIndex);
-      })
+
+  function handleDragEnd(event) {
+    const { active, over } = event;
+  
+    if (!active || !over || active.id === over.id) {
+      return;
+    }
+  
+    const oldIndex = items.findIndex((item) => item.id === active.id);
+    const newIndex = items.findIndex((item) => item.id === over.id);
+  
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newItems = [...items];
+      const [movedItem] = newItems.splice(oldIndex, 1);
+      newItems.splice(newIndex, 0, movedItem);
+  
+      setItems(newItems);
     }
   }
 
