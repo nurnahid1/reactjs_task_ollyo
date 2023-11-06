@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import "./ImageGallery.css";
 import image1 from "./assets/images/image-1.webp";
@@ -12,11 +12,11 @@ import image8 from './assets/images/image-8.webp';
 import image9 from './assets/images/image-9.webp';
 import image10 from './assets/images/image-10.jpeg';
 import image11 from './assets/images/image-11.jpeg';
-import { DndContext,  closestCenter } from "@dnd-kit/core";
+import dark from './assets/dark.png';
+import { DndContext, closestCenter } from "@dnd-kit/core";
 
 import {
   SortableContext,
-  // arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 
@@ -82,35 +82,55 @@ const ImagesGallery = () => {
     },
   ];
 
+  // Dark mode
+  const [theme, setTheme] = useState("light")
+
+  useEffect(()=>{
+      if(theme === "dark"){
+        document.documentElement.classList.add("dark");
+      }
+      else{
+        document.documentElement.classList.remove("dark");
+      }
+  }, [theme]);
+
+  const HandleThemeSwitch = () => {
+    setTheme(theme === "dark" ? "light" :"dark");
+  }
+  // Dark mode end
+
   const [items, setItems] = useState(images);
   const [deletedImg, setDeletedImg] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
 
+  
   const handleDeleteImg = () => {
-    const restImages = items.filter((item) => !deletedImg.includes(item));
+    const updatedItems = items.filter((item) => !selectedImages.includes(item.id));
+    setItems(updatedItems);
+    console.log('clicked')
     setDeletedImg([]);
-    setItems(restImages);
   };
 
   return (
-    <div className="bg-[#E9EBF7] py-4 h-[800px]">
-      <div className=" p-2 md:w-10/12 lg:w-5/6 mx-auto bg-white rounded-md sm:w-full lg:max-w-[850px]">
+    <div className="bg-[#E9EBF7] dark:bg-[#292929] py-4 h-[800px]">
+      <div className=" p-2 md:w-10/12 lg:w-5/6 mx-auto bg-white dark:bg-[#121212] rounded-md sm:w-full lg:max-w-[850px]">
         {/* Up Area  */}
         <div className="flex justify-between px-10 py-1">
           <div>
-            <p className="text-xl mt-1">
-              {deletedImg.length > 0
-                ? `${deletedImg.length} Files Selected`
+            <p className="text-xl mt-1 dark:text-white">
+              {selectedImages.length > 0
+                ? `${selectedImages.length} Files Selected`
                 : "Gallery"}
             </p>
           </div>
 
-          <div >
+          <div className="flex items-center">
+            <img className="w-6 h-6" onClick={HandleThemeSwitch}  src={dark} alt="" />
             <button
               onClick={handleDeleteImg}
-              disabled={deletedImg.length === 0}
-              className={classNames("p-2 rounded-lg text-lg", {
-                "text-red-600": deletedImg.length > 0,
-                "text-black": deletedImg.length === 0,
+              className={classNames("p-2 rounded-lg text-lg dark:text-white", {
+                "text-red-600": selectedImages.length > 0,
+                "text-black": selectedImages.length === 0,
               })}
             >
               Delete files
@@ -133,6 +153,8 @@ const ImagesGallery = () => {
                   deletedImg={deletedImg}
                   setDeletedImg={setDeletedImg}
                   index={index}
+                  selectedImages={selectedImages}
+                  setSelectedImages={setSelectedImages}
                 ></SortableItem>
               ))}
             </div>
@@ -161,7 +183,6 @@ const ImagesGallery = () => {
       setItems(newItems);
     }
   }
-
 
 };
 

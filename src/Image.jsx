@@ -7,8 +7,8 @@ const Image = forwardRef(
     {
       image,
       index,
-      deletedImg,
-      setDeletedImg,
+      selectedImages,
+      setSelectedImages,
       isDragging,
       style,
       ...props
@@ -17,25 +17,22 @@ const Image = forwardRef(
   ) => {
 
     const [hovered, setHovered] = useState(false);
-    const [selected, setSelected] = useState(deletedImg?.includes(image));
- 
-   
+    const isSelected = selectedImages.includes(image.id);
+    
+
     useEffect(() => {
-      setSelected(deletedImg?.includes(image));
-    }, [deletedImg, image]);
-
-    const handleDeletedImages = () => {
-      const updatedDeletedImg = [...deletedImg];
-      const isCurrentlySelected = updatedDeletedImg?.includes(image);
-
-      if (isCurrentlySelected) {
-        updatedDeletedImg?.splice(updatedDeletedImg?.indexOf(image), 1);
-      } else {
-        updatedDeletedImg?.push(image);
+      if (isSelected) {
+        setHovered(true);
       }
+    }, [isSelected]);
 
-      setDeletedImg(updatedDeletedImg);
-      setSelected(!isCurrentlySelected);
+
+    const handleImageSelection = () => {
+      if (selectedImages.includes(image.id)) {
+        setSelectedImages(selectedImages.filter((id) => id !== image.id));
+      } else {
+        setSelectedImages([...selectedImages, image.id]);
+      }
     };
 
     const styles = {
@@ -43,15 +40,15 @@ const Image = forwardRef(
       transformOrigin: "0% 0%",
       height: `${index === 0 ? "300px" : "140px"}`,
       width: `${index === 0 ? "300px" : "140px"}`,
+      border: "1px solid #E9EBF7",
       borderRadius: "12px",
       gridColumn: `${index === 0 ? "1 / span 2" : ""}`,
       gridRow: `${index === 0 ? "1 / span 2" : ""}`,
       cursor: isDragging ? "grabbing" : "grab",
       backgroundColor: "#ffffff",
       display: "flex",
-      justifyContent: "center",
       alignItems: "center",
-      border: "1px solid #E9EBF7",
+      justifyContent: "center",
       ...style,
     };
 
@@ -64,16 +61,16 @@ const Image = forwardRef(
           className="relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          onClick={handleImageSelection}
         >
           <img className="rounded-[10px]" src={image?.url} alt="" />
-          
+
         <input
-            type="checkbox"
-            isSelected={selected}
-            name={image}
-            id={image?.id}
-            className='absolute top-2 left-2 w-4 rounded-md h-4'
-            onChange={handleDeletedImages}
+          type="checkbox"
+          name={image.id}
+          id={image.id}
+          className="absolute top-2 left-2 w-4 rounded-md h-4"
+          onChange={handleImageSelection}
         />
 
           {hovered && (

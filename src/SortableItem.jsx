@@ -4,7 +4,7 @@ import Image from "./Image";
 
 
 export function SortableItem(props) {
-  const { image } = props;
+  const { image, selectedImages, setSelectedImages } = props;
   const {
     isDragging,
     attributes,
@@ -23,10 +23,13 @@ export function SortableItem(props) {
       <Image 
       ref={setNodeRef} 
       style={style} 
-      // withOpacity={isDragging} 
+      isDragging={isDragging}
+      image={image}
       {...props} 
       {...attributes} 
       {...listeners}
+      selectedImages={selectedImages}
+      setSelectedImages={setSelectedImages}
       ></Image>
   );
 }
